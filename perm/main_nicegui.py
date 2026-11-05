@@ -1,6 +1,5 @@
-from nicegui import ui
 import pandas as pd
-
+from nicegui import ui
 
 # Chargement des données
 df = pd.read_csv("data/gp.csv")
@@ -16,24 +15,23 @@ NORAD = "NORAD Number"
 
 
 def create_interface():
-
     ui.label("Satellite Explorer").classes("text-3xl font-bold")
-    ui.label(f"Orbital database until 07/10/26 : 12h23 UTC by PC&MD&GPT — {len(df):,} satellites").classes("text-gray-600")
+    ui.label(
+        f"Orbital database until 07/10/26 : 12h23 UTC by PC&MD&GPT — {len(df):,} satellites"
+    ).classes("text-gray-600")
 
     ui.separator()
 
     # --- Filtres ---
     with ui.row().classes("w-full items-end"):
-
         search = ui.input(
-            label="Search satellite",
-            placeholder="ISS, STARLINK, CALSPHERE..."
+            label="Search satellite", placeholder="ISS, STARLINK, CALSPHERE..."
         ).classes("w-80")
 
         orbit = ui.select(
             ["All"] + sorted(df[ORBIT].dropna().unique().tolist()),
             value="All",
-            label="Orbit"
+            label="Orbit",
         ).classes("w-48")
 
         ui.button("Search", on_click=lambda: update_table())
@@ -45,17 +43,23 @@ def create_interface():
         {"name": "name", "label": "Satellite", "field": "name", "sortable": True},
         {"name": "country", "label": "Country", "field": "country", "sortable": True},
         {"name": "orbit", "label": "Orbit", "field": "orbit", "sortable": True},
-        {"name": "perigee", "label": "Perigee (km)", "field": "perigee", "sortable": True},
+        {
+            "name": "perigee",
+            "label": "Perigee (km)",
+            "field": "perigee",
+            "sortable": True,
+        },
         {"name": "apogee", "label": "Apogee (km)", "field": "apogee", "sortable": True},
-        {"name": "inclination", "label": "Inclination (°)", "field": "inclination", "sortable": True},
+        {
+            "name": "inclination",
+            "label": "Inclination (°)",
+            "field": "inclination",
+            "sortable": True,
+        },
         {"name": "norad", "label": "NORAD", "field": "norad", "sortable": True},
     ]
 
-    table = ui.table(
-        columns=columns,
-        rows=[],
-        pagination=15
-    ).classes("w-full")
+    table = ui.table(columns=columns, rows=[], pagination=15).classes("w-full")
 
     result_label = ui.label()
 

@@ -1,29 +1,23 @@
-from nicegui import ui
-import plotly.express as px
 import numpy as np
 import pandas as pd
+import plotly.express as px
+from nicegui import ui
 
 
 def update_figure(plot: ui.plotly, phase=0, amplitude=1):
     X = np.linspace(0, 3, 100)
 
-    df_sin = pd.DataFrame({
-        "x": X,
-        "y": amplitude * np.sin(X + phase),
-        "function": "sin"
-    })
+    df_sin = pd.DataFrame(
+        {"x": X, "y": amplitude * np.sin(X + phase), "function": "sin"}
+    )
 
-    df_cos = pd.DataFrame({
-        "x": X,
-        "y": amplitude * np.cos(X + phase),
-        "function": "cos"
-    })
+    df_cos = pd.DataFrame(
+        {"x": X, "y": amplitude * np.cos(X + phase), "function": "cos"}
+    )
 
     df = pd.concat([df_sin, df_cos])
 
-    plot.update_figure(
-        px.line(df, x="x", y="y", color="function")
-    )
+    plot.update_figure(px.line(df, x="x", y="y", color="function"))
 
 
 def app():
@@ -36,14 +30,12 @@ def app():
     ui.query(".nicegui-content").style("padding: 0; overflow: hidden;")
 
     with ui.element("div").classes("flex flex-col w-full h-screen"):
-
         # Header
         with ui.element("header").classes("min-h-[4%] bg-base-300 p-4"):
             ui.label("The sinusoid exercice").classes("text-xl")
 
         # Main
         with ui.element("div").classes("flex grow"):
-
             with ui.element("div").classes("w-[30%] max-w-xs bg-base-200 p-4"):
                 ui.label("Options").classes("text-xl")
 
@@ -54,29 +46,16 @@ def app():
                 amplitude = ui.slider(min=0, max=3, value=1, step=0.1)
 
                 ui.button("Update").on_click(
-                    lambda: update_figure(
-                        plot,
-                        phase.value,
-                        amplitude.value
-                    )
+                    lambda: update_figure(plot, phase.value, amplitude.value)
                 )
 
             # Content
             with ui.element("div").classes("grow bg-base-100 p-4"):
-
                 X = np.linspace(0, 3, 100)
 
-                df_sin = pd.DataFrame({
-                    "x": X,
-                    "y": np.sin(X),
-                    "function": "sin"
-                })
+                df_sin = pd.DataFrame({"x": X, "y": np.sin(X), "function": "sin"})
 
-                df_cos = pd.DataFrame({
-                    "x": X,
-                    "y": np.cos(X),
-                    "function": "cos"
-                })
+                df_cos = pd.DataFrame({"x": X, "y": np.cos(X), "function": "cos"})
 
                 df = pd.concat([df_sin, df_cos])
 
