@@ -5,20 +5,21 @@ description = ""
 
 authors = [
     { name = "masao"},
-    
+
 ]
 requires-python = ">=3.10, <3.14"
 readme = "README.md"
 dependencies = [
     "pandas[parquet]>=2,<3",
     "nicegui[native]>=2,<3",
-    "pyside6"
+    "pyside6",
+    "plotly>=7.1.0",
 ]
 
 
 [project.scripts]
-main_ng = "perm.main_nicegui:run"
 main_qt = "perm.main_qt:run"
+main_ng = "perm.main_nicegui:run"
 
 [dependency-groups]
 test = [
