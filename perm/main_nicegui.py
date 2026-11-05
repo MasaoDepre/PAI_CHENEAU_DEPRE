@@ -1,5 +1,8 @@
 import pandas as pd
+import plotly.express as px
 from nicegui import ui
+
+from perm.analysis import count_by_orbit
 
 # Chargement des données
 df = pd.read_csv("data/gp.csv")
@@ -35,6 +38,19 @@ def create_interface():
         ).classes("w-48")
 
         ui.button("Search", on_click=lambda: update_table())
+
+    ui.separator()
+
+    # --- Répartition des orbites ---
+    orbit_counts = count_by_orbit(df)
+    fig = px.bar(
+        orbit_counts,
+        x="orbit",
+        y="count",
+        labels={"orbit": "Orbit class", "count": "Number of satellites"},
+        title="Satellites by orbit class",
+    )
+    ui.plotly(fig).classes("w-full h-96")
 
     ui.separator()
 
